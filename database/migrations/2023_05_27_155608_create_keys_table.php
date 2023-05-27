@@ -10,14 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('keys', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->string('selected_key')->default('Enter an API key');
-            $table->boolean('tts_enabled')->default(false);
-            $table->rememberToken();
             $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+            $table->string('api_key')->default(0);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('keys');
     }
 };
